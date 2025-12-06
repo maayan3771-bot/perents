@@ -1,0 +1,15 @@
+{
+  "short_name": "הורות בטוב",
+  "name": "הורות בטוב - ניהול משותף",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2919/2919906.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}

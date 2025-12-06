@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Parin</string>
+    <string name="title_activity_main">Parin</string>
+    <string name="package_name">com.lm.parin</string>
+    <string name="custom_url_scheme">com.lm.parin</string>
+</resources>

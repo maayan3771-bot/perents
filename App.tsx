@@ -25,6 +25,7 @@ import TravelLog from './components/TravelLog';
 import ScheduleSettings from './components/ScheduleSettings';
 import AuthScreen from './components/AuthScreen';
 import DocumentsHub from './components/DocumentsHub';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
 
 const DEFAULT_SCHEDULE: CustodySchedule = {
   cycleLength: 14,
@@ -62,16 +63,28 @@ const App: React.FC = () => {
         const userDocRef = doc(db, 'users', firebaseUser.uid);
         const userSnap = await getDoc(userDocRef);
         if (userSnap.exists()) {
-          setUser(userSnap.data() as User);
+          const userData = userSnap.data() as User;
+          setUser(userData);
+          // If user doesn't have second parent info - redirect to settings
+          if (!userData.secondParentFirstName || !userData.secondParentLastName) {
+            setCurrentView('settings');
+          }
         } else {
-          setUser({
+          const newUser: User = {
             id: firebaseUser.uid,
             email: firebaseUser.email || '',
             fullName: 'User',
+            firstName: 'User',
+            lastName: '',
             phone: '',
             parentType: Parent.DAD,
+            secondParentName: '',
+            secondParentFirstName: '',
+            secondParentLastName: '',
             role: 'PARENT'
-          });
+          };
+          setUser(newUser);
+          setCurrentView('settings');
         }
       } else {
         setUser(null);
@@ -281,6 +294,7 @@ const App: React.FC = () => {
       case 'swaps': if (isChild) return null; return <SwapRequests requests={swapRequests} currentUser={currentUser} onRequestUpdate={updateSwapRequest} onCreateRequest={createSwapRequest} />;
       case 'travel': if (isChild) return null; return <TravelLog trips={trips} onAddTrip={addTrip} currentUser={currentUser} />;
       case 'documents': return <DocumentsHub documents={documents} medications={medications} checklist={checklist} onAddDocument={addDocument} onAddMedication={addMedication} onUpdateChecklist={updateChecklist} currentUser={currentUser} role={user.role} />;
+      case 'analytics': return <AnalyticsDashboard currentUser={user.email || ''} />;
       case 'settings': if (isChild) return null; return <div className="space-y-6 pb-20"><ScheduleSettings currentSchedule={custodySchedule} currentHolidayAssignments={holidayAssignments} currentFixedPayments={fixedPayments} currentExpenseSettings={expenseSettings} onSave={handleSaveSettings} /><div className="p-6 bg-white rounded-2xl shadow-sm border border-slate-100"><h2 className="text-lg font-bold mb-4">אזור אישי</h2><div className="bg-slate-50 p-4 rounded-lg mb-4 flex items-center justify-between"><div><p className="font-bold text-slate-800">{user.fullName}</p><p className="text-xs text-slate-500">{user.email}</p></div><button onClick={handleLogout} className="text-rose-600 p-2 hover:bg-rose-50 rounded-lg transition-colors flex flex-col items-center"><LogOut size={20} /><span className="text-[10px] font-medium">התנתק</span></button></div></div></div>;
       default: return <CalendarView events={events} currentUser={currentUser} schedule={custodySchedule} holidayAssignments={holidayAssignments} />;
     }

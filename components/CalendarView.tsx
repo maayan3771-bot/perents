@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CalendarEvent, Parent, CustodySchedule, HolidayAssignment, CalendarReminder, SwapRequest, SwapStatus } from '../types';
-import { ChevronLeft, ChevronRight, Sun, Bell, Plus, X, Star, RefreshCcw, Info, Trash2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sun, Bell, Plus, X, Star, RefreshCcw, Trash2 } from 'lucide-react';
 import { HOLIDAYS_2024_2030 } from '../services/holidayData';
 
 interface CalendarViewProps {

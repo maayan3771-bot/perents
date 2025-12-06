@@ -8,11 +8,22 @@ export type UserRole = 'PARENT' | 'CHILD';
 
 export interface User {
   id: string;
-  fullName: string;
+  fullName: string; // kept for backward compatibility (firstName + ' ' + lastName)
+  firstName?: string;
+  lastName?: string;
   email: string;
   phone: string;
   parentType: Parent;
+  secondParentName?: string; // kept for backward compatibility (combined)
+  secondParentFirstName?: string;
+  secondParentLastName?: string;
   role: UserRole;
+  biometricCredentials?: Array<{
+    credentialId: string;
+    publicKey: string;
+    counter: number;
+    createdAt: string;
+  }>;
 }
 
 export interface CustodySchedule {
@@ -160,4 +171,4 @@ export interface ChecklistItem {
   category: 'CLOTHING' | 'MEDICAL' | 'SCHOOL' | 'TOYS';
 }
 
-export type View = 'calendar' | 'expenses' | 'swaps' | 'travel' | 'settings' | 'documents';
+export type View = 'calendar' | 'expenses' | 'swaps' | 'travel' | 'settings' | 'documents' | 'analytics';

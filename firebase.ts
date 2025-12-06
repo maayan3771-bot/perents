@@ -4,7 +4,16 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   onAuthStateChanged, 
-  signOut 
+  signOut,
+  sendEmailVerification,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+  signInWithCredential,
+  sendPasswordResetEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider
 } from "firebase/auth";
 import { 
   getFirestore, 
@@ -20,6 +29,7 @@ import {
   getDoc 
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAMt1TXPbg9rVOzuWpkUnRJcbZ4PJ-jzyE",
@@ -34,6 +44,15 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+export const analytics = getAnalytics(app);
+
+// Log current domain for debugging auth/unauthorized-domain errors
+if (typeof window !== 'undefined') {
+  const currentDomain = window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+  const protocol = window.location.protocol;
+  console.log(`🔐 App running on: ${protocol}//${currentDomain}`);
+  console.log('📝 Make sure this domain is added to Firebase Console → Authentication → Authorized domains');
+}
 
 // Export all necessary functions for other components
 export { 
@@ -41,6 +60,16 @@ export {
   signInWithEmailAndPassword, 
   onAuthStateChanged, 
   signOut,
+  sendEmailVerification,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+  signInWithCredential,
+  sendPasswordResetEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  logEvent,
   collection, 
   onSnapshot, 
   addDoc, 
